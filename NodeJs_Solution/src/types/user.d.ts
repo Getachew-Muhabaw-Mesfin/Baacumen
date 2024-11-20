@@ -1,6 +1,12 @@
 import { IRoleInstance } from "./role";
 import { Model, Optional } from "sequelize";
 
+/**
+ * User type declaration
+ * User type declaration is used to define the structure of the user model
+ *
+ */
+
 export interface IUserAttributes {
   id: number;
   firstName: string;

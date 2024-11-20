@@ -1,5 +1,11 @@
 import { Model, Optional } from "sequelize";
 
+/**
+ * Permission type declaration
+ * Permission type declaration is used to define the structure of the permission model
+ *
+ */
+
 export interface IPermissionAttributes {
   id: number;
   name: string;
@@ -13,5 +19,5 @@ export interface IPermissionCreationAttributes
 export interface IPermissionInstance
   extends Model<IPermissionAttributes, IPermissionCreationAttributes>,
     IPermissionAttributes {
-  // Instance methods can be added here
+  addRole: (role: Role) => Promise<void>;
 }

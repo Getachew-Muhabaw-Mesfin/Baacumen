@@ -2,6 +2,14 @@ import { DataTypes } from "sequelize";
 import sequelize from "../config/dbConfig";
 import { IPermissionInstance } from "../types/permission";
 
+/**
+ * Permission model
+ * Permission model is used to interact with the permissions table in the database and
+ *
+ * A permission can be assigned to multiple roles
+ * A role can have multiple permissions
+ */
+
 const Permission = sequelize.define<IPermissionInstance>(
   "Permission",
   {

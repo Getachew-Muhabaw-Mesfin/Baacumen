@@ -1,8 +1,15 @@
 import { DataTypes } from "sequelize";
 import sequelize from "../config/dbConfig";
 import { IUserInstance } from "../types/user";
-import { IRoleInstance } from "../types/role";
-import Role from "./role.model"; // Import the Role model
+import Role from "./role.model";
+
+/**
+ * User model
+ * User model is used to interact with the users table in the database and
+ *
+ * A user belongs to a single role
+ * But a role can have multiple users
+ */
 
 const User = sequelize.define<IUserInstance>(
   "User",

@@ -1,6 +1,12 @@
 import { IPermissionInstance } from "./permission";
 import { Model, Optional } from "sequelize";
 
+/**
+ * Role type declaration
+ * Role type declaration is used to define the structure of the role model
+ *
+ */
+
 export interface IRoleAttributes {
   id: number;
   name: string;
@@ -14,5 +20,5 @@ export interface IRoleCreationAttributes
 export interface IRoleInstance
   extends Model<IRoleAttributes, IRoleCreationAttributes>,
     IRoleAttributes {
-  // Instance methods can be added here
+  addPermission: (permission: Permission) => Promise<void>;
 }
