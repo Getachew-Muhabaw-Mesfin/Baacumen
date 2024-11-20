@@ -1,6 +1,6 @@
 import { DataTypes, Sequelize } from "sequelize";
 import sequelize from "../config/dbConfig";
-import { ICollaborationRequestInstance } from "../types/collaborationRequest.types";
+import { ICollaborationRequestInstance } from "../types/collaborationRequest";
 
 /**
  * CollaborationRequest model
