@@ -1,7 +1,6 @@
 import dotenv from "dotenv";
 import express, { Request, Response, NextFunction } from "express";
 import path from "path";
-import initializeRolesAndPermissions from "./utils/initializeRolesAndPermissions";
 import helmet from "helmet";
 import colors from "colors";
 import cors from "cors";
