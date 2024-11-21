@@ -24,6 +24,7 @@ class CollaborationRequestDAL {
   async getAllCollaborationRequests(
     options: PaginationOptions
   ): Promise<PaginatedResult<ICollaborationRequestInstance>> {
+    // add search and filter options  here
     return await paginate<ICollaborationRequestInstance>(
       CollaborationRequest,
       options
@@ -70,55 +71,17 @@ class CollaborationRequestDAL {
     throw new Error("Collaboration request not found");
   }
 
-  /**
-   * Search and filter collaboration requests
-   * @param options Pagination options
-   * @param filters Filters for search and status
-   */
   async searchAndFilterCollaborationRequests(
     options: PaginationOptions,
-    filters: {
-      title?: string;
-      description?: string;
-      category?: string;
-      status?: string;
-    }
+    where: Record<string, string>,
+    searchFilters: Record<string, string>
   ): Promise<PaginatedResult<ICollaborationRequestInstance>> {
-    const where: any = {};
+    const combinedWhere = { ...where, ...searchFilters };
 
-    // Validate and construct the filter conditions
-    if (filters.title && filters.title.trim() !== "") {
-      where.title = { [Op.like]: `%${filters.title}%` };
-    }
-    if (filters.description && filters.description.trim() !== "") {
-      where.description = { [Op.like]: `%${filters.description}%` };
-    }
-    if (filters.category && filters.category.trim() !== "") {
-      where.category = { [Op.eq]: filters.category };
-    }
-    if (filters.status && filters.status.trim() !== "") {
-      where.status = { [Op.eq]: filters.status };
-    }
-
-    // Validate pagination options
-    const validPage =
-      Number.isInteger(options.page) && options.page > 0 ? options.page : 1;
-    const validPageSize =
-      Number.isInteger(options.pageSize) && options.pageSize > 0
-        ? options.pageSize
-        : 10;
-
-    const sanitizedOptions = {
-      ...options,
-      page: validPage,
-      pageSize: validPageSize,
-    };
-
-    // Call the paginate function with sanitized options and filters
     return await paginate<ICollaborationRequestInstance>(
       CollaborationRequest,
-      sanitizedOptions,
-      where
+      options,
+      combinedWhere
     );
   }
 }

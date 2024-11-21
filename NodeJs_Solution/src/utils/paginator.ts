@@ -10,6 +10,12 @@ export interface PaginatedResult<T> {
   currentPage: number;
 }
 
+/**
+ * Paginate a query
+ * @param model - The model to paginate
+ * @param options - Pagination options
+
+ */
 export const paginate = async <T>(
   model: any,
   options: PaginationOptions,

@@ -10,6 +10,9 @@ class CollaborationRequestController {
    */
   async createCollaborationRequest(req: Request, res: Response) {
     try {
+      console.log(
+        "-----------------Creating a new collaboration request-----------------"
+      );
       const _payload = req.body;
 
       // const schema = Joi.object({
@@ -31,6 +34,9 @@ class CollaborationRequestController {
    */
   async getAllCollaborationRequests(req: Request, res: Response) {
     try {
+      console.log(
+        "-----------------Getting all collaboration requests-----------------"
+      );
       const { page = 1, pageSize = 10 } = req.query;
 
       const options = {
@@ -51,6 +57,9 @@ class CollaborationRequestController {
    */
   async getCollaborationRequestById(req: Request, res: Response) {
     try {
+      console.log(
+        "-----------------Getting collaboration request by ID-----------------"
+      );
       const { id } = req.params;
       const request = await CollaborationRequestDAL.getCollaborationRequestById(
         Number(id)
@@ -70,6 +79,9 @@ class CollaborationRequestController {
    */
   async updateCollaborationRequestStatus(req: Request, res: Response) {
     try {
+      console.log(
+        "-----------------Updating collaboration request status-----------------"
+      );
       const { id } = req.params;
       const { status } = req.body;
 
@@ -89,6 +101,9 @@ class CollaborationRequestController {
    */
   async deleteCollaborationRequest(req: Request, res: Response) {
     try {
+      console.log(
+        "-----------------Deleting collaboration request-----------------"
+      );
       const { id } = req.params;
 
       const response = await CollaborationRequestDAL.deleteCollaborationRequest(
@@ -105,30 +120,36 @@ class CollaborationRequestController {
    */
   async searchAndFilterCollaborationRequests(req: Request, res: Response) {
     try {
+      console.log(
+        "--------------------Filtering collaboration requests-----------------"
+      );
       const {
         title,
         description,
         category,
         status,
-        page = 1,
-        pageSize = 10,
+        page = "1",
+        pageSize = "10",
       } = req.query;
 
       const options = {
-        page: parseInt(page as string, 10),
-        pageSize: parseInt(pageSize as string, 10),
+        page: parseInt(page as string, 10) || 1,
+        pageSize: parseInt(pageSize as string, 10) || 10,
       };
 
-      const filters: Record<string, string> = {};
-      if (title) filters.title = title as string;
-      if (description) filters.description = description as string;
-      if (category) filters.category = category as string;
-      if (status) filters.status = status as string;
+      const where: Record<string, string> = {};
+
+      const searchFilters: Record<string, string> = {};
+      if (title) searchFilters.title = title as string;
+      if (description) searchFilters.description = description as string;
+      if (category) searchFilters.category = category as string;
+      if (status) searchFilters.status = status as string;
 
       const filteredRequests =
         await CollaborationRequestDAL.searchAndFilterCollaborationRequests(
           options,
-          filters
+          where,
+          searchFilters
         );
 
       res.status(200).json(filteredRequests);

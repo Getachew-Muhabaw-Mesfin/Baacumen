@@ -8,6 +8,7 @@ import cors from "cors";
 import compression from "compression";
 import initRoutes from "./api/index";
 import initTables from "./config/inittables";
+import sequelize from "./config/dbConfig";
 
 colors.enable();
 
@@ -18,6 +19,7 @@ const PORT = process.env.PORT;
 
 app.use(cors());
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "public")));
 app.use(compression());
 app.use(helmet());
@@ -25,6 +27,17 @@ app.use(helmet());
 initTables();
 
 initRoutes(app);
+
+/**
+ * Redirect to non-trailing slash URL
+ */
+app.use((req, res, next) => {
+  if (req.path.endsWith("/") && req.path.length > 1) {
+    const newPath = req.path.slice(0, -1);
+    return res.redirect(301, newPath);
+  }
+  next();
+});
 
 function startServer() {
   try {

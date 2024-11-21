@@ -1,64 +1,55 @@
-import { DataTypes } from "sequelize";
-import sequelize from "../config/dbConfig";
-import { IUserInstance } from "../types/user";
-import Role from "./role.model";
+import { Model, DataTypes, Sequelize } from "sequelize";
+import Event from "./event.model";
+import Rsvp from "./rsvp.model";
 
-/**
- * User model
- * User model is used to interact with the users table in the database and
- *
- * A user belongs to a single role
- * But a role can have multiple users
- */
+export class User extends Model {
+  public id!: number;
+  public firstName!: string;
+  public lastName!: string;
+  public email!: string;
 
-const User = sequelize.define<IUserInstance>(
-  "User",
-  {
-    id: {
-      type: DataTypes.INTEGER.UNSIGNED,
-      autoIncrement: true,
-      primaryKey: true,
-    },
-    firstName: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    lastName: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    gender: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    birthDate: {
-      type: DataTypes.DATEONLY,
-      allowNull: false,
-    },
-    email: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      unique: true,
-    },
-    password: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    roleId: {
-      type: DataTypes.INTEGER.UNSIGNED,
-      allowNull: false,
-      references: {
-        model: Role,
-        key: "id",
+  public readonly createdEvents?: Event[];
+  public readonly rsvps?: Rsvp[];
+}
+
+export const initUserModel = (sequelize: Sequelize) => {
+  User.init(
+    {
+      id: {
+        type: DataTypes.INTEGER.UNSIGNED,
+        autoIncrement: true,
+        primaryKey: true,
+      },
+      firstName: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      lastName: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      email: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        unique: true,
       },
     },
-  },
-  {
-    tableName: "users",
-    timestamps: true,
-  }
-);
+    {
+      sequelize,
+      tableName: "users",
+    }
+  );
+};
 
-User.belongsTo(Role, { foreignKey: "roleId" });
+/**
+ * Associate User model with other models
+ * A user can create multiple events
+ * A user can have multiple rsvps
+ *
+ */
+export const associateUserModel = () => {
+  User.hasMany(Event, { foreignKey: "organizerId", as: "createdEvents" });
+  User.hasMany(Rsvp, { foreignKey: "userId", as: "rsvps" });
+};
 
 export default User;
