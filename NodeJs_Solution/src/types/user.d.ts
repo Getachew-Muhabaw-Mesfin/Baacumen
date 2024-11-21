@@ -1,3 +1,4 @@
+import e from "express";
 import { IRoleInstance } from "./role";
 import { Model, Optional } from "sequelize";
 
@@ -20,9 +21,27 @@ export interface IUserAttributes {
   updatedAt?: Date;
 }
 
+/**
+ * User Creation Attributes
+ */
 export interface IUserCreationAttributes
   extends Optional<IUserAttributes, "id"> {}
 
 export interface IUserInstance
   extends Model<IUserAttributes, IUserCreationAttributes>,
     IUserAttributes {}
+
+/**
+ * User Update Attributes
+ */
+export interface IUserUpdateAttributes extends IUserCreationAttributes {
+  id: number;
+}
+
+/**
+ * User Login Interface
+ */
+export interface IUserLogin {
+  email: string;
+  password: string;
+}

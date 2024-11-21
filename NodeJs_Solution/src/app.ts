@@ -1,33 +1,64 @@
+/**
+ * External imports
+ */
 import dotenv from "dotenv";
-import express, { Request, Response, NextFunction } from "express";
-import path from "path";
+import express from "express";
 import helmet from "helmet";
-import colors from "colors";
 import cors from "cors";
 import compression from "compression";
+
+/**
+ * Local imports
+ */
+
 import initRoutes from "./api/index";
-import initTables from "./models";
+import syncDb from "./models";
 
-colors.enable();
-
+/**ss
+ * Load environment variables from .env file
+ *
+ */
 dotenv.config();
 
+/**
+ * Initialize the express app
+ */
 const app = express();
 const PORT = process.env.PORT;
 
-app.use(cors());
+/**
+ * Middleware to parse incoming requests
+ */
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-app.use(express.static(path.join(__dirname, "public")));
+
+/**
+ * Middleware to compress the response
+ */
 app.use(compression());
+
+/**
+ * Middleware to enable CORS
+ */
+app.use(cors());
+
+/**
+ * Middleware to secure the app by setting various HTTP headers
+ */
 app.use(helmet());
 
-initTables();
+/**
+ * Sync the database
+ */
+syncDb();
 
+/**
+ * Initialize routes
+ */
 initRoutes(app);
 
 /**
  * Redirect to non-trailing slash URL
+ *
  */
 app.use((req, res, next) => {
   if (req.path.endsWith("/") && req.path.length > 1) {
@@ -37,13 +68,14 @@ app.use((req, res, next) => {
   next();
 });
 
+/**
+ * Start the server on the specified port
+ */
 function startServer() {
   try {
     app.listen(PORT, () => {
       console.log(`Listening to port ${PORT}`);
     });
-
-    // initializeRolesAndPermissions();
   } catch (error: any) {
     console.error(`Error starting server: ${error.message}`);
   }

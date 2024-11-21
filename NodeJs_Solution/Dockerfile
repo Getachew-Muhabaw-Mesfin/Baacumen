@@ -10,7 +10,7 @@ RUN npm install -g nodemon
 
 COPY . .
 
-EXPOSE 19980
+EXPOSE 4000
 
 CMD ["nodemon", "dist/app.js"]
 

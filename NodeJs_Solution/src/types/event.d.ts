@@ -1,3 +1,8 @@
+/**
+ * Define the Event interface
+ * Event interface is used to define the structure of the event model
+ */
+
 export interface IEvent {
   id: number;
   name: string;

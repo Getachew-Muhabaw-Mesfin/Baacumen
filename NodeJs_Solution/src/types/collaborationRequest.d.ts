@@ -23,7 +23,7 @@ export interface CollaborationRequestCreationAttributes
 
 /**
  * CollaborationRequestInstance is the Sequelize instance that allows interaction with a single row of the
- * 'collaboration_requests' table.
+ * 'collaborations' table.
  */
 export interface ICollaborationRequestInstance
   extends Model<

@@ -1,18 +1,25 @@
 import { Model, DataTypes, Sequelize } from "sequelize";
 import Event from "./event.model";
 import Rsvp from "./rsvp.model";
+import { Role } from "./role.model";
 
 export class User extends Model {
   public id!: number;
   public firstName!: string;
   public lastName!: string;
   public email!: string;
-  public role!: "User" | "Admin";
   public password!: string;
   public passwordChangedAt?: Date;
   public readonly createdEvents?: Event[];
   public readonly rsvps?: Rsvp[];
+  public readonly role?: Role;
+  public roleId!: number;
 
+  /**
+   * Password should not be returned in the response
+   * PasswordChangedAt should not be returned in the response
+   * Return the user object without password and passwordChangedAt
+   */
   public toJSON(): object {
     const values = Object.assign({}, this.get());
     delete values.password;
@@ -21,6 +28,10 @@ export class User extends Model {
   }
 }
 
+/**
+ * Initialize User model
+ * Define the User model with the properties
+ */
 export const initUserModel = (sequelize: Sequelize) => {
   User.init(
     {
@@ -42,11 +53,6 @@ export const initUserModel = (sequelize: Sequelize) => {
         allowNull: false,
         unique: true,
       },
-      role: {
-        type: DataTypes.ENUM("User", "Admin"),
-        allowNull: false,
-        defaultValue: "User",
-      },
       password: {
         type: DataTypes.STRING,
         allowNull: false,
@@ -55,6 +61,14 @@ export const initUserModel = (sequelize: Sequelize) => {
       passwordChangedAt: {
         type: DataTypes.DATE,
         allowNull: true,
+      },
+      roleId: {
+        type: DataTypes.INTEGER.UNSIGNED,
+        allowNull: false,
+        references: {
+          model: Role,
+          key: "id",
+        },
       },
     },
     {
@@ -67,11 +81,10 @@ export const initUserModel = (sequelize: Sequelize) => {
 
 /**
  * Associate User model with other models
- * A user can create multiple events
- * A user can have multiple rsvps
- *
+ * A user must have one role, so we associate it here
  */
 export const associateUserModel = () => {
+  User.belongsTo(Role, { foreignKey: "roleId" });
   User.hasMany(Event, { foreignKey: "organizerId", as: "createdEvents" });
   User.hasMany(Rsvp, { foreignKey: "userId", as: "rsvps" });
 };

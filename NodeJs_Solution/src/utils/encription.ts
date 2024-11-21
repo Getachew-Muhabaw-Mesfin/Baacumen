@@ -1,5 +1,10 @@
 import crypto from "crypto";
 
+/**
+ * Encrypts the token using the cipher key and cipher iv
+ * This HELPER FUNCTION is used to encrypt the token before storing it in the database
+ */
+
 let localEncryptToken = (token: string) => {
   let cipher_key = process.env.CIPHER_KEY as string;
   let cipher_iv = process.env.CIPHER_IV as string;
@@ -13,6 +18,10 @@ let localEncryptToken = (token: string) => {
   return encrypted;
 };
 
+/**
+ * Decrypts the token using the cipher key and cipher iv
+ * This HELPER FUNCTION is used to decrypt the token before verifying it
+ */
 let localDecryptToken = (encryptedToken: string) => {
   let cipher_key = process.env.CIPHER_KEY as string;
   let cipher_iv = process.env.CIPHER_IV as string;

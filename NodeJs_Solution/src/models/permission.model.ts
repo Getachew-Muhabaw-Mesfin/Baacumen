@@ -1,33 +1,33 @@
-import { DataTypes } from "sequelize";
-import sequelize from "../config/dbConfig";
-import { IPermissionInstance } from "../types/permission";
+import { Model, DataTypes, Sequelize } from "sequelize";
+
+export class Permission extends Model {
+  public id!: number;
+  public action!: string;
+}
 
 /**
- * Permission model
- * Permission model is used to interact with the permissions table in the database and
- *
- * A permission can be assigned to multiple roles
- * A role can have multiple permissions
+ * Initialize Permission model
+ * Define the Permission model with the properties
  */
-
-const Permission = sequelize.define<IPermissionInstance>(
-  "Permission",
-  {
-    id: {
-      type: DataTypes.INTEGER.UNSIGNED,
-      autoIncrement: true,
-      primaryKey: true,
+export const initPermissionModel = (sequelize: Sequelize) => {
+  Permission.init(
+    {
+      id: {
+        type: DataTypes.INTEGER.UNSIGNED,
+        autoIncrement: true,
+        primaryKey: true,
+      },
+      action: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
     },
-    name: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      unique: true,
-    },
-  },
-  {
-    tableName: "permissions",
-    timestamps: true,
-  }
-);
+    {
+      sequelize,
+      tableName: "permissions",
+      timestamps: true,
+    }
+  );
+};
 
 export default Permission;

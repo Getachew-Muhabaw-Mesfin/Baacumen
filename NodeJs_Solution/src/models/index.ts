@@ -10,17 +10,21 @@ import sequelize from "../config/dbConfig";
 import { initUserModel, associateUserModel } from "./user.model";
 import { initEventModel, associateEventModel } from "./event.model";
 import { initRsvpModel, associateRsvpModel } from "./rsvp.model";
-
+import { initRoleModel, associateRoleModel } from "./role.model";
+import { initPermissionModel } from "./permission.model";
 const syncModels = async () => {
   try {
     initUserModel(sequelize);
     initEventModel(sequelize);
     initRsvpModel(sequelize);
-    await sequelize.sync({ force: false });
+    initRoleModel(sequelize);
+    initPermissionModel(sequelize);
+    await sequelize.sync({ force: true });
 
     associateUserModel();
     associateEventModel();
     associateRsvpModel();
+    associateRoleModel();
 
     console.log("---------------Database synchronized successfully----------");
   } catch (error) {

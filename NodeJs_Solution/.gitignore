@@ -6,8 +6,7 @@
 # Ignore system files on macOS
 .DS_Store
 
-# Ignore npm package lock file
-package-lock.json
+
 
 # Ignore log files
 logs

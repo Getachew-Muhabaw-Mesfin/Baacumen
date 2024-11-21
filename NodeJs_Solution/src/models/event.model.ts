@@ -2,6 +2,13 @@ import { Model, DataTypes, Sequelize } from "sequelize";
 import User from "./user.model";
 import Rsvp from "./rsvp.model";
 
+/**
+ * Event model
+ * Event model is used to interact with the events table in the database
+ *
+ * An event belongs to a user
+ * An event can have multiple rsvps
+ */
 export class Event extends Model {
   public id!: number;
   public name!: string;

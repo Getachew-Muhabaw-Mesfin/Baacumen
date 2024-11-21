@@ -13,6 +13,9 @@ export interface IPermissionAttributes {
   updatedAt?: Date;
 }
 
+/**
+ * Permission instance declaration
+ */
 export interface IPermissionCreationAttributes
   extends Optional<IPermissionAttributes, "id"> {}
 

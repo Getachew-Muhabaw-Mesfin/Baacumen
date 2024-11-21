@@ -12,9 +12,7 @@ export interface PaginatedResult<T> {
 
 /**
  * Paginate a query
- * @param model - The model to paginate
- * @param options - Pagination options
-
+ * Use the options to specify the page number and page size
  */
 export const paginate = async <T>(
   model: any,

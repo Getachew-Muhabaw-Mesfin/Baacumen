@@ -4,7 +4,7 @@ import User from "./user.model";
 
 export class Rsvp extends Model {
   public id!: number;
-  public status!: "Going" | "Not Going" | "Maybe";
+  public status!: "YES" | "NO" | "Maybe" | "Not Answered";
   public userId!: number;
   public eventId!: number;
 
@@ -12,6 +12,10 @@ export class Rsvp extends Model {
   public readonly event?: Event;
 }
 
+/**
+ * Initialize Rsvp model
+ * Define the Rsvp model with the properties
+ */
 export const initRsvpModel = (sequelize: Sequelize) => {
   Rsvp.init(
     {
@@ -21,7 +25,7 @@ export const initRsvpModel = (sequelize: Sequelize) => {
         primaryKey: true,
       },
       status: {
-        type: DataTypes.ENUM("Going", "Not Going", "Maybe"),
+        type: DataTypes.ENUM("YES", "NO", "Maybe", "Not Answered"),
         allowNull: false,
       },
       userId: {
