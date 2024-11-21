@@ -1,5 +1,5 @@
 import { Op } from "sequelize";
-import CollaborationRequest from "../model/collaborationRequest.model";
+import CollaborationRequest from "../models/collaborationRequest.model";
 import { ICollaborationRequestInstance } from "../types/collaborationRequest";
 import {
   paginate,

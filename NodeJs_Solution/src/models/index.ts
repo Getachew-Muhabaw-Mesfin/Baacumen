@@ -27,3 +27,5 @@ const syncModels = async () => {
     console.error("Error initializing models:", error);
   }
 };
+
+export default syncModels;

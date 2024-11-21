@@ -7,8 +7,7 @@ import colors from "colors";
 import cors from "cors";
 import compression from "compression";
 import initRoutes from "./api/index";
-import initTables from "./config/inittables";
-import sequelize from "./config/dbConfig";
+import initTables from "./models";
 
 colors.enable();
 
