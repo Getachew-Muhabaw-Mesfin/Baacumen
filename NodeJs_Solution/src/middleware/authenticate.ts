@@ -13,9 +13,13 @@ declare global {
       user?: {
         id: string;
         email: string;
-        role: string;
+        roleId: number;
         fistName: string;
         lastName: string;
+        role?: {
+          name: string;
+          permissions: { action: string }[];
+        };
       };
     }
   }
@@ -24,7 +28,7 @@ declare global {
 interface DecodedUser {
   id: string;
   email: string;
-  role: string;
+  roleId: number;
   fistName: string;
   lastName: string;
 }
@@ -66,7 +70,7 @@ const authenticate = async (
     req.user = {
       id: user.id,
       email: user.email,
-      role: user.role,
+      roleId: user.roleId,
       fistName: user.fistName,
       lastName: user.lastName,
     };

@@ -5,7 +5,7 @@ export const createUser = async (userData: {
   lastName: string;
   email: string;
   password: string;
-  role: string;
+  roleId: number;
 }) => {
   try {
     const user = await User.create(userData);

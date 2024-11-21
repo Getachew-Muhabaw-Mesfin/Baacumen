@@ -1,7 +1,7 @@
 import { Model, DataTypes, Sequelize } from "sequelize";
 import Event from "./event.model";
 import Rsvp from "./rsvp.model";
-import { Role } from "./role.model";
+import { initRoleModel, Role } from './role.model';
 
 export class User extends Model {
   public id!: number;
@@ -62,11 +62,12 @@ export const initUserModel = (sequelize: Sequelize) => {
         type: DataTypes.DATE,
         allowNull: true,
       },
+
       roleId: {
         type: DataTypes.INTEGER.UNSIGNED,
         allowNull: false,
         references: {
-          model: Role,
+          model: "roles",
           key: "id",
         },
       },

@@ -3,6 +3,7 @@
  */
 import dotenv from "dotenv";
 import express from "express";
+import cron from "node-cron";
 import helmet from "helmet";
 import cors from "cors";
 import compression from "compression";
@@ -13,6 +14,7 @@ import compression from "compression";
 
 import initRoutes from "./api/index";
 import syncDb from "./models";
+import { EventDAL } from "./dal/event.dal";
 
 /**ss
  * Load environment variables from .env file
@@ -50,6 +52,27 @@ app.use(helmet());
  * Sync the database
  */
 syncDb();
+
+/**
+ * Schedule the cron job
+ * This cron job runs every hour
+ */
+
+cron.schedule("0 * * * *", async () => {
+  console.log("Running a task every hour to send reminders...");
+
+  try {
+    const reminders = await EventDAL.getUpcomingEventsForReminders();
+
+    for (const reminder of reminders) {
+      await EventDAL.sendReminderEmail(reminder);
+    }
+
+    console.log("All reminders sent successfully.");
+  } catch (error) {
+    console.error("Error occurred while running the cron job:", error);
+  }
+});
 
 /**
  * Initialize routes

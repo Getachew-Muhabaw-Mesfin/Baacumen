@@ -21,13 +21,14 @@ export const register = async (req: Request, res: Response) => {
       lastName: Joi.string().required(),
       email: Joi.string().email().required(),
       password: Joi.string().required(),
-      role: Joi.string().required(),
+      roleId: Joi.number().required(),
     });
 
     const { error } = schema.validate(_payload);
     if (error) {
       return res.status(400).json({ message: error.message });
     }
+    console.log("Payload", _payload);
     const hashedPassword = await hashPassword(_payload.password);
     const user = await createUser({ ..._payload, password: hashedPassword });
     return res.status(201).json({
@@ -35,6 +36,7 @@ export const register = async (req: Request, res: Response) => {
       data: user,
     });
   } catch (error: any) {
+    console.log("Error", error);
     return res.status(500).json({
       status: 500,
       message: error.message,
@@ -66,7 +68,7 @@ export const login = async (req: Request, res: Response) => {
     }
     const token = generateToken(
       user.id,
-      user.role as any,
+      user.roleId,
       user.email,
       user.firstName,
       user.lastName
@@ -76,7 +78,7 @@ export const login = async (req: Request, res: Response) => {
       data: {
         userId: user.id,
         email: user.email,
-        role: user.role,
+        role: user.roleId,
         name: `${user.firstName} ${user.lastName}`,
         accessToken: token,
       },
