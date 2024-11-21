@@ -55,6 +55,7 @@ export const initEventModel = (sequelize: Sequelize) => {
     {
       sequelize,
       tableName: "events",
+      timestamps: true,
     }
   );
 };

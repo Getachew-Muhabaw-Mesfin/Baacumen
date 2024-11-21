@@ -1,7 +1,5 @@
 import { Request, Response } from "express";
-import Joi from "joi";
 import CollaborationRequestDAL from "../dal/collaborationRequest.dal";
-import { title } from "process";
 
 class CollaborationRequestController {
   /**
@@ -24,7 +22,7 @@ class CollaborationRequestController {
       const newRequest =
         await CollaborationRequestDAL.createCollaborationRequest(_payload);
       res.status(201).json(newRequest);
-    } catch (error) {
+    } catch (error: any) {
       res.status(500).json({ error: error.message });
     }
   }
@@ -47,7 +45,7 @@ class CollaborationRequestController {
       const requests =
         await CollaborationRequestDAL.getAllCollaborationRequests(options);
       res.status(200).json(requests);
-    } catch (error) {
+    } catch (error: any) {
       res.status(500).json({ error: error.message });
     }
   }
@@ -69,7 +67,7 @@ class CollaborationRequestController {
       } else {
         res.status(404).json({ message: "Collaboration request not found" });
       }
-    } catch (error) {
+    } catch (error: any) {
       res.status(500).json({ error: error.message });
     }
   }
@@ -91,7 +89,7 @@ class CollaborationRequestController {
           status
         );
       res.status(200).json(updatedRequest);
-    } catch (error) {
+    } catch (error: any) {
       res.status(500).json({ error: error.message });
     }
   }
@@ -110,7 +108,7 @@ class CollaborationRequestController {
         Number(id)
       );
       res.status(200).json(response);
-    } catch (error) {
+    } catch (error: any) {
       res.status(500).json({ error: error.message });
     }
   }
@@ -153,7 +151,7 @@ class CollaborationRequestController {
         );
 
       res.status(200).json(filteredRequests);
-    } catch (error) {
+    } catch (error: any) {
       console.log("Error: ", error);
       res.status(500).json({ error: error.message });
     }

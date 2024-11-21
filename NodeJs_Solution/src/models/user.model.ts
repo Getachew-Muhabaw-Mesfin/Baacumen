@@ -7,9 +7,18 @@ export class User extends Model {
   public firstName!: string;
   public lastName!: string;
   public email!: string;
-
+  public role!: "User" | "Admin";
+  public password!: string;
+  public passwordChangedAt?: Date;
   public readonly createdEvents?: Event[];
   public readonly rsvps?: Rsvp[];
+
+  public toJSON(): object {
+    const values = Object.assign({}, this.get());
+    delete values.password;
+    delete values.passwordChangedAt;
+    return values;
+  }
 }
 
 export const initUserModel = (sequelize: Sequelize) => {
@@ -33,10 +42,25 @@ export const initUserModel = (sequelize: Sequelize) => {
         allowNull: false,
         unique: true,
       },
+      role: {
+        type: DataTypes.ENUM("User", "Admin"),
+        allowNull: false,
+        defaultValue: "User",
+      },
+      password: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+
+      passwordChangedAt: {
+        type: DataTypes.DATE,
+        allowNull: true,
+      },
     },
     {
       sequelize,
       tableName: "users",
+      timestamps: true,
     }
   );
 };

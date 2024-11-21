@@ -18,11 +18,17 @@ export const comparePassword = async (
 export const generateToken = (
   userId: number,
   role: string,
-  email: string
+  email: string,
+  firstName: string,
+  lastName: string
 ): string => {
-  return jwt.sign({ id: userId, role, email }, JWT_SECRET, {
-    expiresIn: JWT_EXPIRATION,
-  });
+  return jwt.sign(
+    { id: userId, role, email, firstName, lastName },
+    JWT_SECRET,
+    {
+      expiresIn: JWT_EXPIRATION,
+    }
+  );
 };
 
 export const verifyToken = (token: string): any => {

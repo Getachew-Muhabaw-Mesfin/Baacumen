@@ -44,6 +44,7 @@ export const initRsvpModel = (sequelize: Sequelize) => {
     {
       sequelize,
       tableName: "rsvps",
+      timestamps: true,
     }
   );
 };
